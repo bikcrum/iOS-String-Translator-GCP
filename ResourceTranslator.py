@@ -39,7 +39,7 @@ class ResourceTranslator:
             if line is not None and "=" in line:
                 key, value = line.split("=")
                 self.keys.append(key)
-                self.values.append(value)
+                self.values.append(value.strip().strip(';').strip('"').strip())
             else:
                 self.keys.append(line)
                 self.values.append(' ')
@@ -87,9 +87,9 @@ class ResourceTranslator:
             out = ''
             for i in range(len(self.keys)):
                 if not new_values[i] or len(new_values[i].strip()) == 0:
-                    out += self.keys[i]
+                    out += self.keys[i] + '\n'
                 else:
-                   out += '%s = %s' % (self.keys[i], new_values[i])
+                    out += '%s= "%s";\n' % (self.keys[i], new_values[i].replace('% @', '%@'))
 
             f.write(out)
             f.close()
